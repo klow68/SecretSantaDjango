@@ -1,12 +1,4 @@
-# SecretSantaDjango
-A Secret Santa web interface with the following functionnalities :
-- only 1 user has to register
-- emails are send to all participants to confirm their participation
-- In each Santa group you can indicate the price, a date, a place, a theme
-- Each participant can tell things they like to do to make the Santa/Satan job easier
-- user registered use by default the things they like if it's saved in the profile
 
-raw TODO list
 
 test case :
 création d'un utilisateur
@@ -31,4 +23,4 @@ possibilité d'ajouter des tags de centre d'intérêt
 
 
 -- options utilisateur
-important ajouté la notion de temps en shrek
+active pour l'utilisateur le temps en shrek
