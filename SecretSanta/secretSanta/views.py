@@ -14,7 +14,7 @@ messages = text_messages.Messages()
 
 
 def index(request):
-    variables = {"messages": ["Welcome you son of a bitch"]}
+    variables = {"messages": ["Welcome to Secret Satan"]}
     return render(request, 'secretSanta/index.html', variables)
 
 
