@@ -15,15 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 # from django.contrib import admin
-from . import views
+from .views.index_view import Index_view
+from .views.login_view import Login_view
 
 urlpatterns = [
     # url(r'^polls/', include('polls.urls')),
-    url(r'^$', views.index, name='index'),
-    url('sign_in', views.sign_in, name='sign_in'),
-    url('sign_out', views.sign_out, name='sign_out'),
-    url('create_user_view', views.create_user_view, name='create_user_view'),
-    url('create_user', views.create_user, name='create_user'),
+    url(r'^$', Index_view.index, name='index'),
+    url('sign_in', Login_view.sign_in, name='sign_in'),
+    url('sign_out', Login_view.sign_out, name='sign_out'),
+    url('create_user_view', Login_view.create_user_view, name='create_user_view'),
+    url('create_user', Login_view.create_user, name='create_user'),
     # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^$', views.login, name='login'),
     # url(r'^$', views.group_list, name='group_list'),

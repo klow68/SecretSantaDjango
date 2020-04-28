@@ -1,12 +1,13 @@
-<p>Index secret Santa</p>
-
 {% block content %}
 
-{% if form.errors %}
-<p>{{form.errors}}</p>
+{% if errors %}
+{% for error in errors %}
+<p>{{error}}</p>
+{% endfor %}
 {% endif %}
 
 {% if messages %}
+<p>List of errors<p>
 {% for message in messages %}
 <p>{{message}}</p>
 {% endfor %}
@@ -22,7 +23,7 @@
 {% csrf_token %}
 <input type="text" name="username" placeholder="Utilisateur">
 <input type="password" name="password" placeholder="Mot de passe">
-<input type="submit" value="sign_in" />
+<input type="submit" value="sign in" />
 </form>
 <p><a href="{% url 'create_user' %}">create user</a></p>
 {% endif %}
