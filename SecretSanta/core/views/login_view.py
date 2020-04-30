@@ -4,8 +4,9 @@ from django.shortcuts import render
 # from django.http import Http404
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from ..controller.user_controller import user_controller
-from ..model.form_model import Form
+from ..controller.user_controller import User_controller
+from ..model.form_model import Create_user_form, Login_form
+# from ..ressources.text_messages import Messages
 
 """ SIGN IN """
 
@@ -13,51 +14,58 @@ from ..model.form_model import Form
 class Login_view():
 
     def sign_in(request):
+
+        # create a form instance and populate it with data from the request
+        form = Login_form(request.POST)
+
         if request.method == 'POST':
-            username = request.POST.get('username', False)
-            password = request.POST.get('password', False)
+            # check if fields are valid
+            if form.is_valid():
+                # controller actions
+                variables, is_logged = User_controller().login_user(request, form)
 
-            # controller actions
-            variables = user_controller.login_user(request, username, password)
+                if is_logged:
+                    return redirect('/', variables)
 
-            print(variables)
-            return render(request, "core/index.html", variables)
-        return redirect("/")
+        variables = {"form": form}
+        return render(request, 'core/index.html', variables)
 
     """ SIGN OUT """
 
     @login_required
     def sign_out(request):
-        def get(self, request, **kwargs):
-            user_controller.logout_user(request)
-            return render(request, 'core/index.html')
+        form = Login_form(request.POST)
+        variables = {"form": form}
 
-        user_controller.logout_user(request)
-        return render(request, 'core/index.html')
+        def get(self, request, **kwargs):
+            User_controller().logout_user(request)
+            # TODO moodify to redirect
+            return render(request, 'core/index.html', variables)
+
+        User_controller().logout_user(request)
+        return render(request, 'core/index.html', variables)
 
     """ CREATE USER """
 
-    # show create user form page
-    def create_user_view(request):
-        return render(request, 'core/create_user.html')
-
     # @user_passes_test(email_check)
     def create_user(request):
+
+        # create a form instance and populate it with data from the request
+        form = Create_user_form(request.POST)
+
+        # if this is a POST request we need to process the form data
         if request.method == 'POST':
-            # get form informations
-            form = Form()
-            form.username = request.POST.get('username', False)
-            form.email = request.POST.get('email', False)
-            form.password = request.POST.get('password', False)
-            form.password2 = request.POST.get('password2', False)
-            form.first_name = request.POST.get('first_name', False)
-            form.last_name = request.POST.get('last_name', False)
+            # check if fields are valid
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                variables, user = User_controller().create_user(form)
 
-            # controller actions
-            variables, user = user_controller.create_user(form)
+                # redirect to a new URL
+                return redirect('/', variables)
 
-            return render(request, 'core/index.html', variables)
-        return render(request, 'core/create_user.html')
+        # if a GET (or any other method) we'll create a blank form
+        variables = {"form": form}
+        return render(request, 'core/create_user.html', variables)
 
 
 """

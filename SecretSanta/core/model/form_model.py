@@ -1,32 +1,58 @@
-""" Form class to be used for all forms of the website
-add some validation functionnalities very usefull """
+from django import forms
+from django.forms import ModelForm
+# from django.core.mail import send_mail
+from django.contrib.auth.models import User
+
+""" Form class to be used for all forms of the website """
 
 
-# initialize all variables necessary for the forms
-class Form:
+class Login_form(forms.Form):
+    username = forms.CharField(label='Utilisateur', max_length=100)
+    password = forms.CharField(label='Mot de passe', max_length=32, widget=forms.PasswordInput)
 
-    username = ""
-    password = ""
-    password2 = ""
-    email = ""
-    first_name = ""
-    last_name = ""
-    errors = []
 
-    # make a full validation of the form (email, password...)
-    def is_form_valid(form):
-        result = True
-        form.errors = []
+class Create_user_form(ModelForm):
+    password = forms.CharField(label='Mot de passe', max_length=32, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(label='Mot de passe', max_length=32, widget=forms.PasswordInput)
 
-        if (form.password and form.password2):
-            Form.check_password(form.password, form.password2)
-        else:
-            form.errors += ["passwords are differents"]
-            result = False
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
-        return result
+    def clean(self):
+        cleaned_data = super(Create_user_form, self).clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
 
-    # todo check form
-    def check_password(password, password2):
-        if (password == password2):
-            return True
+        Valid_form().is_same_password(password, confirm_password)
+
+
+""" Validation forms tests """
+
+
+class Valid_form():
+
+    # check if two password are the same
+    def is_same_password(self, password, confirm_password):
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "password and confirm_password does not match", code='42'
+            )
+
+
+"""
+# example for sending mail
+def is_mail_valid(self, form):
+    subject = form.cleaned_data['subject']
+    message = form.cleaned_data['message']
+    sender = form.cleaned_data['sender']
+    cc_myself = form.cleaned_data['cc_myself']
+
+    recipients = ['info@example.com']
+    if cc_myself:
+        recipients.append(sender)
+
+    send_mail(subject, message, sender, recipients)
+    # return HttpResponseRedirect('/thanks/')
+    return "TODO"
+"""

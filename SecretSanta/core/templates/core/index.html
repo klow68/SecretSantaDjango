@@ -7,13 +7,19 @@
 {% endif %}
 
 {% if messages %}
-<p>List of errors<p>
 {% for message in messages %}
 <p>{{message}}</p>
 {% endfor %}
 {% endif %}
 
 
+{% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
 
 {% if user.is_authenticated %}
   <div style="text-align:center">Hi {{ user.username }}! Welcome!!</div>
@@ -21,8 +27,7 @@
 {% else %}
 <form method="post"  role="form" action="sign_in">
 {% csrf_token %}
-<input type="text" name="username" placeholder="Utilisateur">
-<input type="password" name="password" placeholder="Mot de passe">
+{{form.as_p}}
 <input type="submit" value="sign in" />
 </form>
 <p><a href="{% url 'create_user' %}">create user</a></p>

@@ -2,31 +2,21 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>{{form.errors}}</p>
-{% endif %}
-
 {% if messages %}
-{% for message in messages %}
-<p>{{message}}</p>
-{% endfor %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
 {% endif %}
 
 {% if user.is_authenticated %}
-  <div style="text-align:center">Hi {{ user.username }}! You are already log in !!</div>
-  <p><a href="{% url 'sign_out' %}">logout</a></p>
+    <div style="text-align:center">Hi {{ user.username }}! You are already log in !!</div>
+    <p><a href="{% url 'sign_out' %}">logout</a></p>
 {% else %}
-<form method="post"  role="form" action="create_user">
-{% csrf_token %}
-<input type="text" name="username" placeholder="Pseudo">
-<input type="email" name="email" placeholder="Email">
-<input type="text" name="first_name" placeholder="Prénom">
-<input type="text" name="last_name" placeholder="Nom">
-<input type="password" name="password" placeholder="Mot de passe">
-<input type="password" name="password2" placeholder="Mot de passe">
-<input type="submit" value="create user" />
-</form>
-
+    <form method="post"  role="form" action="create_user">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="create user" />
+    </form>
 {% endif %}
 
 {% endblock %}
