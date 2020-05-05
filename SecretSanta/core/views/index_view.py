@@ -4,12 +4,14 @@ from django.shortcuts import render
 # from django.http import Http404
 from ..ressources.text_messages import Messages
 from ..model.form_model import Login_form
+from django.conf import settings
 
 
-class Index_view():
-
-    # todo show message user created
-    def index(request):
+# todo show message user created
+def index(request):
+    if request.method == 'POST':
         form = Login_form(request.POST)
-        variables = {"messages": [Messages.display['welcome']], "form": form}
-        return render(request, 'core/index.html', variables)
+    else:
+        form = Login_form()
+    variables = {"form": form}
+    return render(request, 'core/index.html', variables)

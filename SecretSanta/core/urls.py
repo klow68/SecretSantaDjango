@@ -15,16 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 # from django.contrib import admin
-from .views.index_view import Index_view
-from .views.login_view import Login_view
+from .views import index_view
+from .views import login_view
 
 urlpatterns = [
     # url(r'^polls/', include('polls.urls')),
-    url(r'^$', Index_view.index, name='index'),
-    url('sign_in', Login_view.sign_in, name='sign_in'),
-    url('sign_out', Login_view.sign_out, name='sign_out'),
-    url('create_user', Login_view.create_user, name='create_user'),
-    url('create_user', Login_view.create_user, name='create_user'),
+    url(r'^$', index_view.index, name='home'),
+    url(r'^account/', include('account.urls')),
+    url('sign_in', login_view.sign_in, name='sign_in'),
+    url('sign_out', login_view.sign_out, name='sign_out'),
+    url('create_user', login_view.create_user, name='create_user'),
+    url('create_user', login_view.create_user, name='create_user'),
     # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^$', views.login, name='login'),
     # url(r'^$', views.group_list, name='group_list'),
@@ -33,3 +34,16 @@ urlpatterns = [
     # url(r'^$', views.group_creation, name='group_creation'),
     # url(r'^$', views.santa_form, name='santa_form'),
 ]
+
+
+"""
+ ^account/ ^signup/$ [name='account_signup']
+^account/ ^login/$ [name='account_login']
+^account/ ^logout/$ [name='account_logout']
+^account/ ^confirm_email/(?P<key>\w+)/$ [name='account_confirm_email']
+^account/ ^password/$ [name='account_password']
+^account/ ^password/reset/$ [name='account_password_reset']
+^account/ ^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$ [name='account_password_reset_token']
+^account/ ^settings/$ [name='account_settings']
+^account/ ^delete/$ [name='account_delete'] 
+"""

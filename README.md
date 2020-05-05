@@ -8,6 +8,9 @@ A Secret Santa web interface with the following functionnalities :
 
 raw TODO list
 
+- test user registration token
+- add bootstrap in the project
+
 test case :
 création d'un utilisateur
 l'utilisateur crée un groupe secret santa de l'année courante avec une date et un lieu (si déjà connue) , montant maximum (possibilité de changé la date et le lieu avec renvoie d'email pour les participants)
@@ -29,6 +32,6 @@ Joyeux Secret Santa
 possibilité d'ajouter des tags de centre d'intérêt
 
 
+For local test email, run the command :
+`$ python -m smtpd -n -c DebuggingServer localhost:1025`
 
--- options utilisateur
-important ajouté la notion de temps en shrek

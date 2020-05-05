@@ -1,16 +1,5 @@
-{% block content %}
-
-{% if errors %}
-{% for error in errors %}
-<p>{{error}}</p>
-{% endfor %}
-{% endif %}
-
-{% if messages %}
-{% for message in messages %}
-<p>{{message}}</p>
-{% endfor %}
-{% endif %}
+{% extends "site_base.html" %}
+{% block main_content %}
 
 
 {% if form.subject.errors %}
@@ -22,15 +11,15 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-  <div style="text-align:center">Hi {{ user.username }}! Welcome!!</div>
-  <p><a href="{% url 'sign_out' %}">logout</a></p>
+  <div style="text-align:center">Hi {{ user.username }} ! Welcome !</div>
+  <p><a href="{% url 'account_logout' %}">logout</a></p>
 {% else %}
 <form method="post"  role="form" action="sign_in">
 {% csrf_token %}
-{{form.as_p}}
-<input type="submit" value="sign in" />
+{% load crispy_forms_tags %}
+{{ form|crispy }}
+<button class="btn btn-primary" type="submit">sign in</button>
 </form>
-<p><a href="{% url 'create_user' %}">create user</a></p>
 {% endif %}
 
 {% endblock %}
