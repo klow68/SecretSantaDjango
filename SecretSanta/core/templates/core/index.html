@@ -12,7 +12,7 @@
 
 {% if user.is_authenticated %}
   <div style="text-align:center">Hi {{ user.username }} ! Welcome !</div>
-  <p><a href="{% url 'account_logout' %}">logout</a></p>
+  <p>TODO Your list of secret santa group</p>
 {% else %}
 <form method="post"  role="form" action="sign_in">
 {% csrf_token %}

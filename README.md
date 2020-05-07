@@ -8,7 +8,6 @@ A Secret Santa web interface with the following functionnalities :
 
 raw TODO list
 
-- test user registration token
 - add bootstrap in the project
 
 test case :

@@ -126,8 +126,8 @@ SITE_NAME = 'SecretSantaDjango'
 ./manage.py shell
 from django.contrib.sites.models import Site
 one = Site.objects.all()[0]
-one.domain = 'localhost.com'
+one.domain = 'localhost:8000'
 one.name = 'SecretSantaDjango'
 one.save()
-manage.py dumpdata sites
+./manage.py dumpdata sites
 """
