@@ -6,37 +6,35 @@ import datetime
 # https://docs.djangoproject.com/fr/3.0/ref/contrib/auth/
 
 
-class group(models.Model):
-    id = models.AutoField(primary_key=True)
+class Secret_santa_group(models.Model):
+    group_name = models.CharField(max_length=100)
     master_user = models.ForeignKey(User, models.PROTECT)
-    creation_date = models.DateTimeField(datetime.datetime.now())
+    creation_date = models.DateTimeField(default=datetime.datetime.now())
 
     def __User__(self):
-        # not todo here this is disgusting
         return self.master_user
 
 
-class group_user(models.Model):
-    group = models.ForeignKey(group, models.PROTECT)
-    user = models.ForeignKey(User, models.PROTECT)
+class Secret_santa_group_user(models.Model):
+    group = models.ForeignKey(Secret_santa_group, models.PROTECT)
+    user = models.ForeignKey(User, models.PROTECT, blank=True, null=True)
+    email = models.EmailField()
 
 
 # FIELDS
 
-class field(models.Model):
-    id = models.AutoField(primary_key=True)
+class Field(models.Model):
     field_name = models.CharField(max_length=100)
 
 
-class field_value(models.Model):
-    id = models.AutoField(primary_key=True)
-    field = models.ForeignKey(field, on_delete=models.CASCADE)
+class Field_value(models.Model):
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
     value = models.CharField(max_length=50)
 
 
-class field_group(models.Model):
-    field = models.ForeignKey(field, models.PROTECT)
-    group = models.ForeignKey(group, models.PROTECT)
+class Field_group(models.Model):
+    field = models.ForeignKey(Field, models.PROTECT)
+    group = models.ForeignKey(Secret_santa_group, models.PROTECT)
 
 
 """

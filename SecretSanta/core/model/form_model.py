@@ -1,9 +1,14 @@
 from django import forms
+from django.forms import formset_factory
 from django.forms import ModelForm
 # from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from ..models import Secret_santa_group
 
 """ Form class to be used for all forms of the website """
+
+
+""" TODO remove """
 
 
 class Login_form(forms.Form):
@@ -27,6 +32,46 @@ class Create_user_form(ModelForm):
         Valid_form().is_same_password(password, confirm_password)
 
 
+""" groups """
+
+
+class Create_group_form(ModelForm):
+    class Meta:
+        model = Secret_santa_group
+        fields = ('group_name',)
+
+
+class Email_form(forms.Form):
+    name = forms.EmailField(
+        label='name',
+        widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+
+EmailFormset = formset_factory(Email_form, extra=1)
+
+
+class Create_group_user(ModelForm):
+    number_participants = forms.IntegerField()
+
+    def __init__(self, fields, *args, **kwargs):
+        super(Create_group_user, self).__init__(*args, **kwargs)
+        for i in range(fields):
+            self.fields['email_%i' % i] = forms.EmailField()
+
+    def clean(self):
+        cleaned_data = super(Create_group_user, self).clean()
+        email_dict = {}
+        for i in range(self.number_participants):
+            email_dict["email_%i" % i] = cleaned_data["email_%i" % i]
+
+        self.number_participants, email_dict = Valid_form.clean_duplicates(email_dict)
+
+        for i in range(self.number_participants):
+            cleaned_data["email_%i" % i] = email_dict["email_%i" % i]
+
+        # TODO validate email 1 is user email
+
+
 """ Validation forms tests """
 
 
@@ -38,6 +83,17 @@ class Valid_form():
             raise forms.ValidationError(
                 "password and confirm_password does not match", code='42'
             )
+
+    # clean all duplicate in dict and return a new dict and the size of it
+    def clean_duplicates(self, dict):
+        new_dict = ()
+        cpt = 0
+        for key, value in dict.items():
+            if value not in new_dict.values() and not "":
+                new_dict[key] = value
+                cpt += 1
+
+        return cpt, new_dict
 
 
 """

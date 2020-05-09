@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'crispy_forms',
     "account",
-    "pinax.templates",
+    # "pinax.templates",
     "bootstrapform",
 ]
 

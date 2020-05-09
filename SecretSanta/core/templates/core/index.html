@@ -13,8 +13,10 @@
 {% if user.is_authenticated %}
   <div style="text-align:center">Hi {{ user.username }} ! Welcome !</div>
   <p>TODO Your list of secret santa group</p>
+
+  <a href="/group">Crée un groupe</a>
 {% else %}
-<form method="post"  role="form" action="sign_in">
+<form method="post"  role="form" action="/account/login/">
 {% csrf_token %}
 {% load crispy_forms_tags %}
 {{ form|crispy }}

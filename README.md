@@ -9,10 +9,24 @@ A Secret Santa web interface with the following functionnalities :
 raw TODO list
 
 - add bootstrap in the project
+- use get_text for UI language
 
 test case :
+
+Simple case :
+DONE : création d'un utilisateur
+DONE : l'utilisateur crée un groupe secret santa
+TODO : ajout des email des participant
+TODO : création des utilisateurs (si pas de compte + set prénom nom au premier login)
+TODO : envoie des emails avec mdp (si création sinon juste mail avec nom du groupe)
+TODO : validation de participation de tout les utilisateur
+TODO : envoie un email a tout les participants avec le nom de la personne
+
+
+
+Goal :
 création d'un utilisateur
-l'utilisateur crée un groupe secret santa de l'année courante avec une date et un lieu (si déjà connue) , montant maximum (possibilité de changé la date et le lieu avec renvoie d'email pour les participants)
+l'utilisateur crée un groupe secret santa (TODO later : de l'année courante avec une date et un lieu (si déjà connue) , montant maximum (possibilité de changé la date et le lieu avec renvoie d'email pour les participants))
 ajout des email des participant
 
 possibilité du créateur de crée des champs personnalisé avec une limite de 20 avec le choix pour l'utilisateur de refusé la diffusion
@@ -29,7 +43,8 @@ Avec les infos -> choisi par le créateur
 Joyeux Secret Santa
 
 possibilité d'ajouter des tags de centre d'intérêt
-
+possibilité de modifier le groupe
+possibilité de supprimer le groupe
 
 For local test email, run the command :
 `$ python -m smtpd -n -c DebuggingServer localhost:1025`
