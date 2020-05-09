@@ -1,10 +1,14 @@
 from django import forms
 from django.forms import formset_factory
+from django.forms import BaseFormSet
 from django.forms import ModelForm
+from django.forms.models import inlineformset_factory
 # from django.core.mail import send_mail
 from django.contrib.auth.models import User
-from ..models import Secret_santa_group
-
+from ..models import Secret_santa_group, Secret_santa_group_user
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Fieldset, Div, HTML, ButtonHolder, Submit
+from .custom_formset import Formset
 """ Form class to be used for all forms of the website """
 
 
@@ -34,42 +38,38 @@ class Create_user_form(ModelForm):
 
 """ groups """
 
+class Create_group_form(forms.ModelForm):
 
-class Create_group_form(ModelForm):
+    class Meta:
+        model = Secret_santa_group_user
+        exclude = ()
+
+
+Secret_santa_groupFormSet = inlineformset_factory(
+    Secret_santa_group, Secret_santa_group_user, form=Create_group_form,
+    fields=['email'], extra=1, can_delete=True)
+
+class GroupForm(forms.ModelForm):
+
     class Meta:
         model = Secret_santa_group
-        fields = ('group_name',)
+        exclude = ()
 
-
-class Email_form(forms.Form):
-    name = forms.EmailField(
-        label='name',
-        widget=forms.TextInput(attrs={'class': 'form-control'}))
-
-
-EmailFormset = formset_factory(Email_form, extra=1)
-
-
-class Create_group_user(ModelForm):
-    number_participants = forms.IntegerField()
-
-    def __init__(self, fields, *args, **kwargs):
-        super(Create_group_user, self).__init__(*args, **kwargs)
-        for i in range(fields):
-            self.fields['email_%i' % i] = forms.EmailField()
-
-    def clean(self):
-        cleaned_data = super(Create_group_user, self).clean()
-        email_dict = {}
-        for i in range(self.number_participants):
-            email_dict["email_%i" % i] = cleaned_data["email_%i" % i]
-
-        self.number_participants, email_dict = Valid_form.clean_duplicates(email_dict)
-
-        for i in range(self.number_participants):
-            cleaned_data["email_%i" % i] = email_dict["email_%i" % i]
-
-        # TODO validate email 1 is user email
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = True
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3 create-label'
+        self.helper.field_class = 'col-md-9'
+        self.helper.layout = Layout(
+            Div(
+                Field('group_name'),
+                Fieldset('Email', Formset('formset')),
+                HTML("<br>"),
+                ButtonHolder(Submit('submit', 'save')),
+            )
+        )
 
 
 """ Validation forms tests """

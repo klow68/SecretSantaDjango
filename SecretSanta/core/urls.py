@@ -24,8 +24,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index_view.index, name='home'),
     url(r'^account/', include('account.urls')),
-    url(r'^group', group_view.create_group_form),
-    url(r'^test', group_view.create_group_user),
+    #url(r'^group', group_view.create_group_form),
+    url(r'^group', group_view.create_group),
 
     # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^$', views.login, name='login'),

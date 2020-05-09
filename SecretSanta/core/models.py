@@ -17,8 +17,8 @@ class Secret_santa_group(models.Model):
 
 class Secret_santa_group_user(models.Model):
     group = models.ForeignKey(Secret_santa_group, models.PROTECT)
-    user = models.ForeignKey(User, models.PROTECT, blank=True, null=True)
     email = models.EmailField()
+    # todo on user update update this table too
 
 
 # FIELDS

@@ -46,6 +46,16 @@ possibilité d'ajouter des tags de centre d'intérêt
 possibilité de modifier le groupe
 possibilité de supprimer le groupe
 
+
+requirements : 
+account requirements : 
+	pip install django-user-accounts (https://django-user-accounts.readthedocs.io)
+	pip install django-appconf
+	pip install pytz
+
+use of js for dynamic formset from : 
+https://github.com/elo80ka/django-dynamic-formset
+
 For local test email, run the command :
 `$ python -m smtpd -n -c DebuggingServer localhost:1025`
 
