@@ -1,4 +1,5 @@
 import os
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -111,6 +112,9 @@ USE_TZ = True
 
 SITE_ID = 1
 
+
+# see email in console (DEV only)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
@@ -120,6 +124,16 @@ EMAIL_PORT = 1025
 STATIC_URL = '/static/'
 SITE_NAME = 'SecretSantaDjango'
 
+
+# BOOTSTRAP
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 """
 ./manage.py shell

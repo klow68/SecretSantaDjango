@@ -12,9 +12,14 @@
 
 {% if user.is_authenticated %}
   <div style="text-align:center">Hi {{ user.username }} ! Welcome !</div>
-  <p>TODO Your list of secret santa group</p>
+  <p>Your list of secret santa group : </p>
 
-  <a href="/group">Crée un groupe</a>
+  {% for group in group_list %}
+  	<a href="/group/{{group.group_name}}">{{ group.group_name }}</a><br/>
+  {% endfor %}
+  <br/>
+  <a href="/group/">Crée un groupe</a>
+  
 {% else %}
 <form method="post"  role="form" action="/account/login/">
 {% csrf_token %}

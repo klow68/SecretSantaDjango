@@ -83,8 +83,14 @@
                         // Rather than remove this form from the DOM, we'll mark it as deleted
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
-                        row.hide();
-                        forms = $('.' + options.formCssClass).not(':hidden');
+                        //row.hide();
+                        //forms = $('.' + options.formCssClass).not(':hidden');
+
+                        // !!!!!!! Modified to remove even if it's an inline formset
+                        row.remove();
+                        // Update the TOTAL_FORMS count:
+                        forms = $('.' + options.formCssClass).not('.formset-custom-template');
+                        totalForms.val(forms.length);
                     } else {
                         row.remove();
                         // Update the TOTAL_FORMS count:

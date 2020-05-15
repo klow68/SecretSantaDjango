@@ -1,5 +1,5 @@
 {% for message in messages %}
-    <div class="message {{ message.tags }} alert alert-success alert-dismissible fade show">
+    <div class="message alert {{ message.tags }} alert-success alert-dismissible fade show">
         <button type="button" class="close" aria-label="Close" data-dismiss="alert"><i  class="fas fa-times" aria-hidden="true" ></i></button>
         {{ message }}
     </div>

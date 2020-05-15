@@ -1,100 +1,19 @@
 {% extends "site_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
 {% block main_content %}
-
-
-{% if form.subject.errors %}
-    <ol>
-    {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
-    {% endfor %}
-    </ol>
-{% endif %}
-
-
-
-<form method="post" id="form"  role="form" action="group">
-
-	<div class="form-group bmd-form-group is-filled">
-	    <label for="exampleSelect1" class="bmd-label-floating">Nombre de participants</label>
-	    <input onchange="generateEmailInput()" class="form-control" type="number" value="5" max="50" min="2" id="number-email">
+{% block content %}
+	<div class="container">
+	    <div class="card">		
+	        <div class="card-header">
+	            Création du groupe
+	        </div>
+	        <div class="card-body">
+	             {% crispy form %}
+	        </div>
+	    </div>
 	</div>
-	
-	{% csrf_token %}
-	{% load crispy_forms_tags %}
-	{{ form|crispy }}
-
-	<div id="email">
-		<div id="email1"><label>Email 1</label><input type="email" name="email1" class="form-control" value="{{ request.user.email }}" readonly><br></div>
-	</div>
-	<button class="btn btn-primary" type="submit">submit</button>
-</form>
-        
-<script>
-var numberPreviousEmail = "0";
-var maxEmail = 50;
-generateEmailInput();
-
-function addEmailField(number){
-	var container = document.getElementById("email");
-
-	// Append a node with a div
-    var div = document.createElement("div");
-    div.id = "email" + number;
-    div.class = "form-group";
-
-  	// Append a node with a random text
-  	var label = document.createElement("label");
-  	label.appendChild(document.createTextNode("Email " + number));
-  	div.appendChild(label);
-
-    // Create an <input> element, set its type and name attributes
-    var input = document.createElement("input");
-    input.type = "text";
-    input.name = "email" + number;
-    input.classList.add("form-control");
-    input.type = "email";
-
-    div.appendChild(input)
-    // Append a line break 
-    div.appendChild(document.createElement("br"));
-
-    container.appendChild(div);
-}
-
-function removeEmailField(number){
-	var input=document.getElementById("email" + number);
-	input.parentNode.removeChild(input);
-}
-
-function generateEmailInput() {
-  var numberEmail = document.getElementById("number-email").value;
-  
-  	if(numberEmail>1 && numberEmail<=maxEmail){
-	  if (numberPreviousEmail=="0"){
-	  	numberPreviousEmail = numberEmail;
-
-	  	// init
-	  	for (let i = 2; i <= numberEmail; i++) {
-	  		addEmailField(i);
-	    }
-	  }else{
-	  	// remove
-	  	if (numberPreviousEmail>numberEmail){
-	  		var jsDeMerde = numberEmail;
-	  		for(let j = ++jsDeMerde; j <= numberPreviousEmail; j++) {
-				removeEmailField(j);
-			}
-	  	}else{
-	  		// add
-	  		for(let k = ++numberPreviousEmail; k <= numberEmail; k++) {
-				addEmailField(k);
-			}
-	  	}
-	  	
-	  }
-	  numberPreviousEmail = numberEmail;
-	}
-}
-</script>
-
-{% endblock %}
+{% endblock content %}
+{% endblock main_content %}

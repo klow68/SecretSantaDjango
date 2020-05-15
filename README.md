@@ -16,7 +16,9 @@ test case :
 Simple case :
 DONE : création d'un utilisateur
 DONE : l'utilisateur crée un groupe secret santa
-TODO : ajout des email des participant
+DONE : ajout des email des participant
+TODO : suppression du groupe
+TODO : envoie des invitations par email
 TODO : création des utilisateurs (si pas de compte + set prénom nom au premier login)
 TODO : envoie des emails avec mdp (si création sinon juste mail avec nom du groupe)
 TODO : validation de participation de tout les utilisateur

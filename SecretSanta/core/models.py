@@ -1,15 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import User
 import datetime
+from django.conf import settings
+from django.utils.timezone import make_aware
 
 # doc user
 # https://docs.djangoproject.com/fr/3.0/ref/contrib/auth/
+
+naive_datetime = datetime.datetime.now()
+naive_datetime.tzinfo
+
+settings.TIME_ZONE  # 'UTC'
+aware_datetime = make_aware(naive_datetime)
+aware_datetime.tzinfo
 
 
 class Secret_santa_group(models.Model):
     group_name = models.CharField(max_length=100)
     master_user = models.ForeignKey(User, models.PROTECT)
     creation_date = models.DateTimeField(default=datetime.datetime.now())
+
+    # invitation_send = models.BooleanField(default=False)
 
     def __User__(self):
         return self.master_user
@@ -18,7 +29,7 @@ class Secret_santa_group(models.Model):
 class Secret_santa_group_user(models.Model):
     group = models.ForeignKey(Secret_santa_group, models.PROTECT)
     email = models.EmailField()
-    # todo on user update update this table too
+    # TODO on user email update update this table too
 
 
 # FIELDS

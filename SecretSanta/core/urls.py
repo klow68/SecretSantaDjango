@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import path
 # from django.contrib import admin
 from .views import index_view
 from .views import group_view
@@ -24,8 +25,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index_view.index, name='home'),
     url(r'^account/', include('account.urls')),
-    #url(r'^group', group_view.create_group_form),
-    url(r'^group', group_view.create_group),
+
+    path('group/<slug:group_name>', group_view.update_group),
+    url('group', group_view.create_group),
 
     # path('accounts/', include('django.contrib.auth.urls')),
     # url(r'^$', views.login, name='login'),
@@ -46,5 +48,5 @@ urlpatterns = [
 ^account/ ^password/reset/$ [name='account_password_reset']
 ^account/ ^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$ [name='account_password_reset_token']
 ^account/ ^settings/$ [name='account_settings']
-^account/ ^delete/$ [name='account_delete'] 
+^account/ ^delete/$ [name='account_delete']
 """

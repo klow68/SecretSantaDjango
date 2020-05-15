@@ -1,8 +1,6 @@
 from django import forms
-from django.forms import formset_factory
-from django.forms import BaseFormSet
+from django.forms import BaseInlineFormSet
 from django.forms import ModelForm
-from django.forms.models import inlineformset_factory
 # from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from ..models import Secret_santa_group, Secret_santa_group_user
@@ -45,18 +43,40 @@ class Create_group_form(forms.ModelForm):
         exclude = ()
 
 
-Secret_santa_groupFormSet = inlineformset_factory(
-    Secret_santa_group, Secret_santa_group_user, form=Create_group_form,
-    fields=['email'], extra=1, can_delete=True)
+class BaseSecret_santa_groupFormSet(BaseInlineFormSet):
+    def clean(self):
+        """forces each clean() method on the ChildCounts to be called"""
+        super(BaseInlineFormSet, self).clean()
+
+        """Checks that no two articles have the same title."""
+        if any(self.errors):
+            # Don't bother validating the formset unless each form is valid on its own
+            return
+        # check if there is duplicated and empty emails
+        emails = []
+        for form in self.forms:
+            if self.can_delete and self._should_delete_form(form):
+                continue
+
+            email = form.cleaned_data.get('email')
+
+            if not email or email == "":
+                raise forms.ValidationError("Un email est vide", "error")
+
+            if email in emails:
+                raise forms.ValidationError("Les emails doivent être différents", "error")
+            emails.append(email)
+
 
 class GroupForm(forms.ModelForm):
 
     class Meta:
         model = Secret_santa_group
-        exclude = ()
+        exclude = ('master_user', 'creation_date')
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, is_update, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
+        self.is_update = is_update
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_class = 'form-horizontal'
@@ -70,6 +90,14 @@ class GroupForm(forms.ModelForm):
                 ButtonHolder(Submit('submit', 'save')),
             )
         )
+
+    def clean_group_name(self):
+        group_name = self.cleaned_data['group_name']
+        group = Secret_santa_group.objects.filter(group_name=group_name)
+
+        if group and not self.is_update:
+            raise forms.ValidationError("Ce groupe existe déjà", "error")
+        return group_name
 
 
 """ Validation forms tests """
