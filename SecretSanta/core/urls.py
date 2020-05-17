@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^$', index_view.index, name='home'),
     url(r'^account/', include('account.urls')),
 
+    path('group/rem/<slug:group_name>', group_view.remove_group),
     path('group/<slug:group_name>', group_view.update_group),
     url('group', group_view.create_group),
 

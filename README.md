@@ -17,7 +17,7 @@ Simple case :
 DONE : création d'un utilisateur
 DONE : l'utilisateur crée un groupe secret santa
 DONE : ajout des email des participant
-TODO : suppression du groupe
+DONE : suppression du groupe (TODO popup de confirmation)
 TODO : envoie des invitations par email
 TODO : création des utilisateurs (si pas de compte + set prénom nom au premier login)
 TODO : envoie des emails avec mdp (si création sinon juste mail avec nom du groupe)
@@ -47,7 +47,7 @@ Joyeux Secret Santa
 possibilité d'ajouter des tags de centre d'intérêt
 possibilité de modifier le groupe
 possibilité de supprimer le groupe
-
+q
 
 requirements : 
 account requirements : 

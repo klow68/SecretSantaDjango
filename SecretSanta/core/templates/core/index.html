@@ -15,18 +15,27 @@
   <p>Your list of secret santa group : </p>
 
   {% for group in group_list %}
-  	<a href="/group/{{group.group_name}}">{{ group.group_name }}</a><br/>
+  	<a href="/group/{{group.group_name}}">{{ group.group_name }}</a>
+    
+    {% if group.master_user == user%}
+      &nbsp;
+      <a href="/group/rem/{{group.group_name}}">
+          <i style="color:#e91e63" class="fas fa-trash"></i>
+      </a>
+    {% endif %}
+    <br/>
   {% endfor %}
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
   <br/>
   <a href="/group/">Crée un groupe</a>
   
 {% else %}
-<form method="post"  role="form" action="/account/login/">
-{% csrf_token %}
-{% load crispy_forms_tags %}
-{{ form|crispy }}
-<button class="btn btn-primary" type="submit">sign in</button>
-</form>
+  <form method="post"  role="form" action="/account/login/">
+  {% csrf_token %}
+  {% load crispy_forms_tags %}
+  {{ form|crispy }}
+  <button class="btn btn-primary" type="submit">sign in</button>
+  </form>
 {% endif %}
 
 {% endblock %}

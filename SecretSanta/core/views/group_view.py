@@ -52,21 +52,13 @@ def update_group(request, group_name):
     template_name = 'core/create_group.html'
 
     if request.method == 'GET':
-        # get group with GET informations
-        try:
-            group = Secret_santa_group.objects.get(group_name=group_name)
-        except Exception:
-            messages.error(request, "Plus d'un groupe possède ce nom !")
-            return redirect('home')
-        # get all group user linked
-        group_users = Secret_santa_group_user.objects.filter(group=group)
+
+        # get group object and initial informations of the group
+        group = Group_controller().get_group(group_name, request)
+        initial_data = Group_controller().get_initial_data(group_name, request)
 
         # initiate groupForm
         form = GroupForm(is_update, initial={"group_name": group.group_name})
-        # initiate all groupset
-        initial_data = []
-        for group_user in group_users:
-            initial_data.append({'email': group_user.email},)
 
         # create formset with extra at the right value
         formset = inlineformset_factory(
@@ -97,3 +89,11 @@ def update_group(request, group_name):
         'formset': formset,
         'form': form
     })
+
+
+@login_required
+def remove_group(request, group_name):
+    if request.method == 'GET':
+        # remove the group
+        Group_controller().remove_group(group_name, request)
+        return redirect('home')
